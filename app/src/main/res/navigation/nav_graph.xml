@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/pendingFragment"
+        android:name="com.droidgeeks.groceryapp.ui.fragments.PendingFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_pending" />
+
+    <fragment
+        android:id="@+id/allGroceriesFragment"
+        android:name="com.droidgeeks.groceryapp.ui.fragments.AllGroceriesFragment"
+        android:label="AllGroceriesFragment"
+        tools:layout="@layout/fragment_all_groceries" />
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="com.droidgeeks.groceryapp.ui.fragments.HomeFragment"
+        android:label="HomeFragment"
+        tools:layout="@layout/fragment_home">
+        <action
+            android:id="@+id/action_homeFragment_to_addGroceryFragment"
+            app:destination="@id/addGroceryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addGroceryFragment"
+        android:name="com.droidgeeks.groceryapp.ui.fragments.AddGroceryFragment"
+        android:label="AddGroceryFragment"
+        tools:layout="@layout/fragment_add_grocery">
+
+        <argument
+            android:name="grocer_data"
+            app:argType="string"
+            app:nullable="true" />
+
+    </fragment>
+
+</navigation>

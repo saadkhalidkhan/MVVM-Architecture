@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">GroceryApp</string>
+    <string name="grocery_list">Grocery List</string>
+    <string name="home">Pending</string>
+    <string name="all_list">Completed</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="edit">Edit</string>
+    <string name="save">Save</string>
+    <string name="items">Items</string>
+    <string name="grocery">Grocery</string>
+</resources>
