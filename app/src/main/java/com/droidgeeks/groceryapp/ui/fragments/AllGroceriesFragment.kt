@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
@@ -19,6 +20,7 @@ import com.droidgeeks.groceryapp.room.tables.GroceryTable
 import com.droidgeeks.groceryapp.ui.GroceryAdapter
 import com.droidgeeks.groceryapp.view_model.HomeViewModel
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_all_groceries.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,14 +28,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-
+@AndroidEntryPoint
 class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickListener {
 
     lateinit var binding: FragmentAllGroceriesBinding
 
     lateinit var navGraph: NavController
 
-    lateinit var home_viewmodel: HomeViewModel
+    private val home_viewmodel: HomeViewModel by viewModels()
     lateinit var groceryAdapter: GroceryAdapter
 
     val compositeJob = Job()
@@ -78,9 +80,8 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
 
     private fun init_data(view: View) {
         navGraph = Navigation.findNavController(view)
-        home_viewmodel = ViewModelProviders.of(requireActivity()).get(HomeViewModel::class.java)
 
-        home_viewmodel.getAllGrocery(requireContext())
+        home_viewmodel.getAllGrocery()
             .observe(viewLifecycleOwner, Observer { list ->
                 init_recycler(list)
             })
@@ -117,7 +118,6 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 launch {
                     home_viewmodel.deleteGrocery(
-                        context!!,
                         groceryAdapter.groceryList[viewHolder.adapterPosition]
                     )
                 }

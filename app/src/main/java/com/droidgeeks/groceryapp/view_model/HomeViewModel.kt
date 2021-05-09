@@ -1,6 +1,5 @@
 package com.droidgeeks.groceryapp.view_model
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.droidgeeks.groceryapp.repository.GroceryRepository
@@ -10,16 +9,13 @@ import com.droidgeeks.groceryapp.utility.AppConstant.EMPTY_NAME
 import com.droidgeeks.groceryapp.utility.AppConstant.EMPTY_NAME_ITMES
 import com.droidgeeks.groceryapp.utility.AppConstant.SUCCESS
 import com.droidgeeks.groceryapp.utility.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class HomeViewModel : ViewModel() {
-
-    lateinit var groceryRepository: GroceryRepository
-
-    init {
-        if (!::groceryRepository.isInitialized) {
-            groceryRepository = GroceryRepository()
-        }
-    }
+@HiltViewModel
+class HomeViewModel @Inject constructor(
+    private val groceryRepository: GroceryRepository
+) : ViewModel() {
 
     fun ValidateCredentials(list_name: String, items: String): SingleLiveEvent<String> {
 
@@ -37,20 +33,20 @@ class HomeViewModel : ViewModel() {
         return loginValidation
     }
 
-    suspend fun insertGrocery(context: Context, groceryTable: GroceryTable) {
-        groceryRepository.addGroceryItem(context, groceryTable)
+    suspend fun insertGrocery(groceryTable: GroceryTable) {
+        groceryRepository.addGroceryItem(groceryTable)
     }
 
-    suspend fun updateGrocery(context: Context, groceryTable: GroceryTable) {
-        groceryRepository.updateGroceryItem(context, groceryTable)
+    suspend fun updateGrocery(groceryTable: GroceryTable) {
+        groceryRepository.updateGroceryItem(groceryTable)
     }
 
-    suspend fun deleteGrocery(context: Context, groceryTable: GroceryTable) {
-        groceryRepository.deleteGrocery(context, groceryTable)
+    suspend fun deleteGrocery(groceryTable: GroceryTable) {
+        groceryRepository.deleteGrocery(groceryTable)
     }
 
-    fun getAllGrocery(context: Context): LiveData<List<GroceryTable>> {
-        return groceryRepository.allGroceryItems(context)
+    fun getAllGrocery(): LiveData<List<GroceryTable>> {
+        return groceryRepository.allGroceryItems()
     }
 
 

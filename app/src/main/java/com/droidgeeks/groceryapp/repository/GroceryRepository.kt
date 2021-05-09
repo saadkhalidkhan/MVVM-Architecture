@@ -1,33 +1,37 @@
 package com.droidgeeks.groceryapp.repository
 
-import android.content.Context
 import androidx.lifecycle.LiveData
-import com.droidgeeks.groceryapp.room.DataBase
+import com.droidgeeks.groceryapp.BaseApplication
+import com.droidgeeks.groceryapp.room.dao.GroceryDao
 import com.droidgeeks.groceryapp.room.tables.GroceryTable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class GroceryRepository() {
+class GroceryRepository(
+    private val context: BaseApplication,
+    private val groceryDao: GroceryDao
+) {
 
-    suspend fun addGroceryItem(context: Context, groceryTable: GroceryTable) {
+    suspend fun addGroceryItem(groceryTable: GroceryTable) {
         withContext(Dispatchers.IO) {
-            DataBase.getInstance(context).getGroceryDao().insert(groceryTable)
+            groceryDao.insert(groceryTable)
         }
     }
 
-    suspend fun updateGroceryItem(context: Context, groceryTable: GroceryTable) {
+    suspend fun updateGroceryItem(groceryTable: GroceryTable) {
         withContext(Dispatchers.IO) {
-            DataBase.getInstance(context).getGroceryDao().update(groceryTable)
+            groceryDao.update(groceryTable)
         }
     }
 
-    fun allGroceryItems(context: Context): LiveData<List<GroceryTable>> {
-        return DataBase.getInstance(context).getGroceryDao().allGroceries
+    fun allGroceryItems(): LiveData<List<GroceryTable>> {
+        return groceryDao.allGroceries
     }
 
-    suspend fun deleteGrocery(context: Context, groceryTable: GroceryTable) {
+    suspend fun deleteGrocery(groceryTable: GroceryTable) {
         withContext(Dispatchers.IO) {
-            DataBase.getInstance(context).getGroceryDao().delete(groceryTable)
+            groceryDao.delete(groceryTable)
         }
     }
 

@@ -7,11 +7,12 @@ import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.droidgeeks.groceryapp.R
 import com.droidgeeks.groceryapp.view_model.HomeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     lateinit var navController: NavController
-    lateinit var homeViewModel: HomeViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +23,6 @@ class MainActivity : AppCompatActivity() {
 
     private fun init_data() {
         navController = Navigation.findNavController(this@MainActivity, R.id.home_fragment)
-        homeViewModel = ViewModelProviders.of(this@MainActivity).get(HomeViewModel::class.java)
 
     }
 

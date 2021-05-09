@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'kotlin-android-extensions'
     id 'androidx.navigation.safeargs'
+    id  'dagger.hilt.android.plugin'
 }
 
 android {
@@ -73,4 +74,11 @@ dependencies {
 
     // To store object in shared Prefrences
     implementation 'com.google.code.gson:gson:2.8.5'
+
+    //hilt
+    implementation "com.google.dagger:hilt-android:$hilt_version"
+    kapt "com.google.dagger:hilt-compiler:$hilt_version"
+
+    implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
+    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 }

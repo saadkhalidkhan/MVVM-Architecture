@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.droidgeeks.groceryapp.databinding.FragmentAddGroceryBinding
@@ -15,6 +15,7 @@ import com.droidgeeks.groceryapp.utility.AppConstant
 import com.droidgeeks.groceryapp.utility.disableError
 import com.droidgeeks.groceryapp.view_model.HomeViewModel
 import com.google.gson.Gson
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_add_grocery.*
 import kotlinx.android.synthetic.main.toolbar.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -24,11 +25,12 @@ import kotlinx.coroutines.launch
 import java.util.*
 import kotlin.coroutines.CoroutineContext
 
+@AndroidEntryPoint
 class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
 
     lateinit var navGraph: NavController
 
-    lateinit var home_viewmodel: HomeViewModel
+    private val home_viewmodel: HomeViewModel by viewModels()
 
     lateinit var binding: FragmentAddGroceryBinding
 
@@ -52,7 +54,6 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
 
     private fun init_data(view: View) {
         navGraph = Navigation.findNavController(view)
-        home_viewmodel = ViewModelProviders.of(requireActivity()).get(HomeViewModel::class.java)
 
     }
 
@@ -99,7 +100,6 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
 
                         launch {
                             home_viewmodel.insertGrocery(
-                                requireContext(),
                                 groceryTable
                             )
                         }
