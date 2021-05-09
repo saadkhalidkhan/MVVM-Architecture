@@ -9,3 +9,4 @@ Tools and Libraries used in this project:
 - Coroutine
 - Data binding
 - Navigation component
+- Hilt Dagger
