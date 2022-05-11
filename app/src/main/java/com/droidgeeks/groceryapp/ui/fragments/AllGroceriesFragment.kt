@@ -54,12 +54,16 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        init_recycler(grocery_list)
         initData(view)
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+    private fun initData(view: View) {
+        navGraph = Navigation.findNavController(view)
+
+        homeViewmodel.getAllGrocery()
+            .observe(viewLifecycleOwner) { list ->
+                initRecycler(list)
+            }
 
         binding.itemsImg.setOnClickListener {
             setVisibility(View.GONE)
@@ -73,15 +77,6 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
 
             setVisibility(View.GONE)
         }
-    }
-
-    private fun initData(view: View) {
-        navGraph = Navigation.findNavController(view)
-
-        homeViewmodel.getAllGrocery()
-            .observe(viewLifecycleOwner) { list ->
-                initRecycler(list)
-            }
 
     }
 

@@ -54,16 +54,8 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        init_recycler(grocery_list)
+
         initData(view)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        binding.itemsImg.setOnClickListener {
-            setVisibility(View.GONE)
-        }
     }
 
     private fun initData(view: View) {
@@ -74,6 +66,10 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
                 groceryList = list
                 initRecycler(list)
             }
+
+        binding.itemsImg.setOnClickListener {
+            setVisibility(View.GONE)
+        }
 
     }
 

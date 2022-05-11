@@ -37,15 +37,6 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
         return binding.root
     }
 
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
-        binding.bottomNavView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
-        binding.bottomNavView.selectedItemId = R.id.navigation_home
-
-        binding.callBack = this@HomeFragment
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initData(view)
@@ -53,6 +44,11 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
 
     private fun initData(view: View) {
         navGraph = Navigation.findNavController(view)
+
+        binding.callBack = this@HomeFragment
+
+        binding.bottomNavView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener)
+        binding.bottomNavView.selectedItemId = R.id.navigation_home
     }
 
     private val mOnNavigationItemSelectedListener =

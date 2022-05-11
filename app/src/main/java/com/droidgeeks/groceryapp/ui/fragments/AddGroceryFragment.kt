@@ -56,15 +56,11 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
     private fun initData(view: View) {
         navGraph = Navigation.findNavController(view)
 
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-
         checkIntent()
 
         binding.callBack = this@AddGroceryFragment
         binding.toolbar.tv_toolbar.text = resources.getString(R.string.add_grocery)
+
     }
 
     private fun checkIntent() {
