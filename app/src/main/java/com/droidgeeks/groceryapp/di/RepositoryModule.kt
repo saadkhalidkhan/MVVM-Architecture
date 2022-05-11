@@ -1,6 +1,5 @@
 package com.droidgeeks.groceryapp.di
 
-import android.content.Context
 import com.droidgeeks.groceryapp.BaseApplication
 import com.droidgeeks.groceryapp.repository.GroceryRepository
 import com.droidgeeks.groceryapp.room.dao.GroceryDao
@@ -16,7 +15,10 @@ object RepositoryModule {
 
     @Singleton
     @Provides
-    fun provideGroceryRepository(context: BaseApplication, groceryDao: GroceryDao): GroceryRepository {
+    fun provideGroceryRepository(
+        context: BaseApplication,
+        groceryDao: GroceryDao
+    ): GroceryRepository {
         return GroceryRepository(context, groceryDao)
     }
 

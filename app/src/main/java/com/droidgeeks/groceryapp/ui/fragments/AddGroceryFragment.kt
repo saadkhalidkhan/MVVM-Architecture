@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import com.droidgeeks.groceryapp.R
 import com.droidgeeks.groceryapp.databinding.FragmentAddGroceryBinding
 import com.droidgeeks.groceryapp.interfaces.GenericAdapterCallback
 import com.droidgeeks.groceryapp.room.tables.GroceryTable
@@ -30,11 +31,11 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
 
     lateinit var navGraph: NavController
 
-    private val home_viewmodel: HomeViewModel by viewModels()
+    private val homeViewmodel: HomeViewModel by viewModels()
 
     lateinit var binding: FragmentAddGroceryBinding
 
-    val compositeJob = Job()
+    private val compositeJob = Job()
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + compositeJob
@@ -42,17 +43,17 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAddGroceryBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init_data(view)
+        initData(view)
     }
 
-    private fun init_data(view: View) {
+    private fun initData(view: View) {
         navGraph = Navigation.findNavController(view)
 
     }
@@ -63,12 +64,12 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
         checkIntent()
 
         binding.callBack = this@AddGroceryFragment
-        binding.toolbar.tv_toolbar.text = "Add Grocery"
+        binding.toolbar.tv_toolbar.text = resources.getString(R.string.add_grocery)
     }
 
     private fun checkIntent() {
         if (arguments?.getString(AppConstant.GROCERY_DATA) != null) {
-            val grocery = Gson().fromJson<GroceryTable>(
+            val grocery = Gson().fromJson(
                 arguments?.getString(AppConstant.GROCERY_DATA),
                 GroceryTable::class.java
             )
@@ -81,57 +82,56 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
 
     override fun <T> getClickedObject() {
 
-        home_viewmodel.ValidateCredentials(list_name.text.toString(), item_list.text.toString())
-            .observe(this@AddGroceryFragment,
-                androidx.lifecycle.Observer { result ->
-                    if (result?.equals(AppConstant.SUCCESS)!!) {
-                        list_name_layout.error = null
-                        item_list_layout.error = null
-                        list_name.clearFocus()
-                        item_list.clearFocus()
+        homeViewmodel.validateCredentials(list_name.text.toString(), item_list.text.toString())
+            .observe(this@AddGroceryFragment) { result ->
+                if (result?.equals(AppConstant.SUCCESS)!!) {
+                    list_name_layout.error = null
+                    item_list_layout.error = null
+                    list_name.clearFocus()
+                    item_list.clearFocus()
 
-                        val groceryTable = GroceryTable()
+                    val groceryTable = GroceryTable()
 
-                        groceryTable.list_name = list_name.text.toString().trim()
-                        groceryTable.items = item_list.text.toString().trim()
-                        groceryTable.date = Date()
-                        groceryTable.complete = false
-                        groceryTable.home_delete = false
+                    groceryTable.list_name = list_name.text.toString().trim()
+                    groceryTable.items = item_list.text.toString().trim()
+                    groceryTable.date = Date()
+                    groceryTable.complete = false
+                    groceryTable.home_delete = false
 
-                        launch {
-                            home_viewmodel.insertGrocery(
-                                groceryTable
-                            )
+                    launch {
+                        homeViewmodel.insertGrocery(
+                            groceryTable
+                        )
+                    }
+
+                    navGraph.navigateUp()
+
+                } else {
+                    when {
+                        result == AppConstant.EMPTY_NAME_ITMES -> {
+                            item_list_layout.error = AppConstant.EMPTY_ITMES
+                            list_name_layout.error = AppConstant.EMPTY_NAME
+
+                            list_name.disableError(list_name_layout)
+                            item_list.disableError(item_list_layout)
+
                         }
+                        result == AppConstant.EMPTY_NAME -> {
+                            list_name_layout.error = AppConstant.EMPTY_NAME
+                            item_list_layout.error = null
 
-                        navGraph.navigateUp()
+                            item_list.disableError(item_list_layout)
 
-                    } else {
-                        when {
-                            result == AppConstant.EMPTY_NAME_ITMES -> {
-                                item_list_layout.error = AppConstant.EMPTY_ITMES
-                                list_name_layout.error = AppConstant.EMPTY_NAME
+                        }
+                        result == AppConstant.EMPTY_ITMES -> {
+                            item_list_layout.error = AppConstant.EMPTY_ITMES
+                            list_name_layout.error = null
 
-                                list_name.disableError(list_name_layout)
-                                item_list.disableError(item_list_layout)
-
-                            }
-                            result == AppConstant.EMPTY_NAME -> {
-                                list_name_layout.error = AppConstant.EMPTY_NAME
-                                item_list_layout.error = null
-
-                                item_list.disableError(item_list_layout)
-
-                            }
-                            result == AppConstant.EMPTY_ITMES -> {
-                                item_list_layout.error = AppConstant.EMPTY_ITMES
-                                list_name_layout.error = null
-
-                                list_name.disableError(list_name_layout)
-                            }
+                            list_name.disableError(list_name_layout)
                         }
                     }
-                })
+                }
+            }
     }
 
 

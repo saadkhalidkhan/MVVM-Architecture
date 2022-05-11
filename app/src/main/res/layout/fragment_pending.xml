@@ -62,6 +62,7 @@
             android:scrollbars="vertical"
             android:src="@android:drawable/ic_menu_close_clear_cancel"
             android:visibility="gone"
+            android:contentDescription="@string/add_grocery"
             app:layout_constraintStart_toStartOf="@+id/tv_items"
             app:layout_constraintTop_toTopOf="@+id/tv_items" />
 

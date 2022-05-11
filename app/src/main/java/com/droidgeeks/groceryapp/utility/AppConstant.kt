@@ -5,10 +5,10 @@ object AppConstant {
     var DatabaseName = "grocery_app_db"
 
     // Login Screen Messages
-    val EMPTY_NAME_ITMES = "Enter List Name/Items"
-    val EMPTY_NAME = "Enter List Name"
-    val EMPTY_ITMES = "Enter Items"
-    val SUCCESS = "Success"
+    const val EMPTY_NAME_ITMES = "Enter List Name/Items"
+    const val EMPTY_NAME = "Enter List Name"
+    const val EMPTY_ITMES = "Enter Items"
+    const val SUCCESS = "Success"
 
-    val GROCERY_DATA = "grocer_data"
+    const val GROCERY_DATA = "grocer_data"
 }

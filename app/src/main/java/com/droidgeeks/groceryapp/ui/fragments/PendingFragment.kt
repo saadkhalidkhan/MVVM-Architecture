@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -34,20 +33,20 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
 
     lateinit var navGraph: NavController
 
-    private val home_viewmodel: HomeViewModel by viewModels()
+    private val homeViewmodel: HomeViewModel by viewModels()
     lateinit var groceryAdapter: GroceryAdapter
 
-    val compositeJob = Job()
+    private val compositeJob = Job()
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + compositeJob
 
-    var grocery_list: List<GroceryTable> = listOf<GroceryTable>()
+    var groceryList: List<GroceryTable> = listOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         binding = FragmentPendingBinding.inflate(inflater, container, false)
         return binding.root
@@ -56,29 +55,29 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        init_recycler(grocery_list)
-        init_data(view)
+        initData(view)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         binding.itemsImg.setOnClickListener {
-            set_visibility(View.GONE)
+            setVisibility(View.GONE)
         }
     }
 
-    private fun init_data(view: View) {
+    private fun initData(view: View) {
         navGraph = Navigation.findNavController(view)
 
-        home_viewmodel.getAllGrocery()
-            .observe(viewLifecycleOwner, Observer { list ->
-                grocery_list = list
-                init_recycler(list)
-            })
+        homeViewmodel.getAllGrocery()
+            .observe(viewLifecycleOwner) { list ->
+                groceryList = list
+                initRecycler(list)
+            }
 
     }
 
-    private fun init_recycler(list: List<GroceryTable>) {
+    private fun initRecycler(list: List<GroceryTable>) {
         val arrayList = ArrayList<GroceryTable>()
         for (grocery in list) {
             if (!grocery.complete && !grocery.home_delete) {
@@ -112,22 +111,22 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
                     grocery.home_delete = true
 
                     launch {
-                        home_viewmodel.updateGrocery(
+                        homeViewmodel.updateGrocery(
                             grocery
                         )
                     }
-                    init_recycler(grocery_list)
+                    initRecycler(groceryList)
                     Toast.makeText(context!!, "Grocery Deleted!", Toast.LENGTH_SHORT).show()
                 } else {
                     val grocery = groceryAdapter.groceryList[viewHolder.adapterPosition]
                     grocery.complete = true
 
                     launch {
-                        home_viewmodel.updateGrocery(
+                        homeViewmodel.updateGrocery(
                             grocery
                         )
                     }
-                    init_recycler(grocery_list)
+                    initRecycler(groceryList)
                     Toast.makeText(context!!, "Grocery Completed!", Toast.LENGTH_SHORT).show()
                 }
 
@@ -136,13 +135,13 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
     }
 
     override fun onItemClick(grocery: GroceryTable) {
-        set_visibility(View.VISIBLE)
+        setVisibility(View.VISIBLE)
 
         tv_items.text = grocery.items
         tv_items.movementMethod = ScrollingMovementMethod()
     }
 
-    private fun set_visibility(visibility: Int) {
+    private fun setVisibility(visibility: Int) {
         binding.itemView.visibility = visibility
         binding.tvItems.visibility = visibility
         binding.itemsImg.visibility = visibility

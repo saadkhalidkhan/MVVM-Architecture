@@ -12,8 +12,8 @@ import com.droidgeeks.groceryapp.room.tables.GroceryTable
 
 class GroceryAdapter(
     var groceryList: List<GroceryTable>,
-    var callingID: String,
-    val listener: OnItemClickListener
+    private var callingID: String,
+    private val listener: OnItemClickListener
 ) :
     RecyclerView.Adapter<GroceryAdapter.GroceryHolder>() {
 
@@ -50,11 +50,11 @@ class GroceryAdapter(
 
         holder.binding.grocery = groceryList[position]
 
-        holder.binding.rlParent.setOnClickListener(View.OnClickListener {
+        holder.binding.rlParent.setOnClickListener {
             if (listener != null && position != RecyclerView.NO_POSITION) {
-                listener!!.onItemClick(groceryList[position])
+                listener.onItemClick(groceryList[position])
             }
-        })
+        }
     }
 
     override fun getItemCount(): Int {

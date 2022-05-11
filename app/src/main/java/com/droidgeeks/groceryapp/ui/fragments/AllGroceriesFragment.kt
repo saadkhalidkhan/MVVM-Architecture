@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -35,22 +34,20 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
 
     lateinit var navGraph: NavController
 
-    private val home_viewmodel: HomeViewModel by viewModels()
+    private val homeViewmodel: HomeViewModel by viewModels()
     lateinit var groceryAdapter: GroceryAdapter
 
-    val compositeJob = Job()
+    private val compositeJob = Job()
 
     lateinit var grocery: GroceryTable
 
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + compositeJob
 
-    var grocery_list: List<GroceryTable> = listOf<GroceryTable>()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentAllGroceriesBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -58,14 +55,14 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 //        init_recycler(grocery_list)
-        init_data(view)
+        initData(view)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
         binding.itemsImg.setOnClickListener {
-            set_visibility(View.GONE)
+            setVisibility(View.GONE)
         }
 
         binding.btnEdit.setOnClickListener {
@@ -74,21 +71,21 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
                 HomeFragmentDirections.actionHomeFragmentToAddGroceryFragment(Gson().toJson(grocery))
             navGraph.navigate(action)
 
-            set_visibility(View.GONE)
+            setVisibility(View.GONE)
         }
     }
 
-    private fun init_data(view: View) {
+    private fun initData(view: View) {
         navGraph = Navigation.findNavController(view)
 
-        home_viewmodel.getAllGrocery()
-            .observe(viewLifecycleOwner, Observer { list ->
-                init_recycler(list)
-            })
+        homeViewmodel.getAllGrocery()
+            .observe(viewLifecycleOwner) { list ->
+                initRecycler(list)
+            }
 
     }
 
-    private fun init_recycler(list: List<GroceryTable>) {
+    private fun initRecycler(list: List<GroceryTable>) {
 
         val arrayList = ArrayList<GroceryTable>()
         for (grocery in list) {
@@ -117,7 +114,7 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
 
             override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
                 launch {
-                    home_viewmodel.deleteGrocery(
+                    homeViewmodel.deleteGrocery(
                         groceryAdapter.groceryList[viewHolder.adapterPosition]
                     )
                 }
@@ -129,14 +126,14 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
     override fun onItemClick(grocery: GroceryTable) {
 
         this.grocery = grocery
-        set_visibility(View.VISIBLE)
+        setVisibility(View.VISIBLE)
 
         tv_items.text = grocery.items
         tv_items.movementMethod = ScrollingMovementMethod()
 
     }
 
-    private fun set_visibility(visibility: Int) {
+    private fun setVisibility(visibility: Int) {
         binding.itemView.visibility = visibility
         binding.tvItems.visibility = visibility
         binding.itemsImg.visibility = visibility

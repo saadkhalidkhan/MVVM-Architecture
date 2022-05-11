@@ -17,7 +17,7 @@ class HomeViewModel @Inject constructor(
     private val groceryRepository: GroceryRepository
 ) : ViewModel() {
 
-    fun ValidateCredentials(list_name: String, items: String): SingleLiveEvent<String> {
+    fun validateCredentials(list_name: String, items: String): SingleLiveEvent<String> {
 
         val loginValidation: SingleLiveEvent<String> = SingleLiveEvent()
 

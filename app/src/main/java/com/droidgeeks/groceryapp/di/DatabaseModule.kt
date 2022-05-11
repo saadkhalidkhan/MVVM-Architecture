@@ -1,6 +1,5 @@
 package com.droidgeeks.groceryapp.di
 
-import androidx.room.Database
 import com.droidgeeks.groceryapp.BaseApplication
 import com.droidgeeks.groceryapp.room.DataBase
 import com.droidgeeks.groceryapp.room.dao.GroceryDao

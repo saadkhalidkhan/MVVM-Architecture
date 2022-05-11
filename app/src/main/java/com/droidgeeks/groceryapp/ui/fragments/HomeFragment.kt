@@ -8,14 +8,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.droidgeeks.groceryapp.R
 import com.droidgeeks.groceryapp.databinding.FragmentHomeBinding
 import com.droidgeeks.groceryapp.interfaces.GenericAdapterCallback
-import com.droidgeeks.groceryapp.view_model.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -23,8 +20,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class HomeFragment : Fragment(), GenericAdapterCallback {
 
     lateinit var navGraph: NavController
-
-    private val home_viewmodel: HomeViewModel by viewModels()
 
     lateinit var binding: FragmentHomeBinding
 
@@ -37,7 +32,7 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentHomeBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -53,10 +48,10 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        init_data(view)
+        initData(view)
     }
 
-    private fun init_data(view: View) {
+    private fun initData(view: View) {
         navGraph = Navigation.findNavController(view)
     }
 
@@ -88,7 +83,7 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
             }
         }
 
-    fun launchNewFragment(fragment: Fragment) {
+    private fun launchNewFragment(fragment: Fragment) {
         try {
             val backStateName = fragment.javaClass.name
             val fragmentManager: FragmentManager = childFragmentManager

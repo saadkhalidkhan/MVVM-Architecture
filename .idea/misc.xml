@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
-        <entry key="..\:/Users/Upgenics/AndroidStudioProjects/MVVM-Architecture/app/src/main/res/layout/activity_main.xml" value="0.18432971014492755" />
+        <entry key="..\:/Users/Upgenics/AndroidStudioProjects/MVVM-Architecture/app/src/main/res/drawable/save_background_btn.xml" value="0.1" />
+        <entry key="..\:/Users/Upgenics/AndroidStudioProjects/MVVM-Architecture/app/src/main/res/layout/activity_main.xml" value="0.1" />
+        <entry key="..\:/Users/Upgenics/AndroidStudioProjects/MVVM-Architecture/app/src/main/res/layout/fragment_add_grocery.xml" value="0.1" />
         <entry key="..\:/Users/Upgenics/AndroidStudioProjects/MVVM-Architecture/app/src/main/res/layout/fragment_pending.xml" value="0.21981981981981982" />
         <entry key="..\:/Users/Upgenics/AndroidStudioProjects/MVVM-Architecture/app/src/main/res/layout/grocery_item.xml" value="0.21981981981981982" />
       </map>

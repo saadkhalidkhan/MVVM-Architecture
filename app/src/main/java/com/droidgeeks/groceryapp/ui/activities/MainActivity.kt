@@ -2,11 +2,9 @@ package com.droidgeeks.groceryapp.ui.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.droidgeeks.groceryapp.R
-import com.droidgeeks.groceryapp.view_model.HomeViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -18,10 +16,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        init_data()
+        initData()
     }
 
-    private fun init_data() {
+    private fun initData() {
         navController = Navigation.findNavController(this@MainActivity, R.id.home_fragment)
 
     }
