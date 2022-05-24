@@ -52,12 +52,12 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
     }
 
     private val mOnNavigationItemSelectedListener =
-        label@ BottomNavigationView.OnNavigationItemSelectedListener { item: MenuItem ->
+        BottomNavigationView.OnNavigationItemSelectedListener { item: MenuItem ->
             when (item.itemId) {
                 R.id.navigation_home -> {
 
                     if (!::pendingFragment.isInitialized) {
-                        pendingFragment = PendingFragment()
+                        pendingFragment = PendingFragment(this@HomeFragment)
                     }
 
                     lastFragment = pendingFragment
@@ -67,7 +67,7 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
                 }
                 R.id.navigation_all -> {
                     if (!::allGroceriesFragment.isInitialized) {
-                        allGroceriesFragment = AllGroceriesFragment()
+                        allGroceriesFragment = AllGroceriesFragment(this@HomeFragment)
                     }
 
                     lastFragment = allGroceriesFragment
@@ -100,6 +100,11 @@ class HomeFragment : Fragment(), GenericAdapterCallback {
     override fun <T> getClickedObject() {
         val action = HomeFragmentDirections.actionHomeFragmentToAddGroceryFragment(null)
         navGraph.navigate(action)
+    }
+
+    override fun setBottomNavVisibility(visibility: Int) {
+        binding.buttonAddGrocery.visibility = visibility
+        binding.bottomNavView.visibility = visibility
     }
 
     override fun onResume() {

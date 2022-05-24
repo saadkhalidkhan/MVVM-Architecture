@@ -103,8 +103,8 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
                     navGraph.navigateUp()
 
                 } else {
-                    when {
-                        result == AppConstant.EMPTY_NAME_ITMES -> {
+                    when (result) {
+                        AppConstant.EMPTY_NAME_ITMES -> {
                             item_list_layout.error = AppConstant.EMPTY_ITMES
                             list_name_layout.error = AppConstant.EMPTY_NAME
 
@@ -112,14 +112,14 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
                             item_list.disableError(item_list_layout)
 
                         }
-                        result == AppConstant.EMPTY_NAME -> {
+                        AppConstant.EMPTY_NAME -> {
                             list_name_layout.error = AppConstant.EMPTY_NAME
                             item_list_layout.error = null
 
                             item_list.disableError(item_list_layout)
 
                         }
-                        result == AppConstant.EMPTY_ITMES -> {
+                        AppConstant.EMPTY_ITMES -> {
                             item_list_layout.error = AppConstant.EMPTY_ITMES
                             list_name_layout.error = null
 
@@ -128,6 +128,10 @@ class AddGroceryFragment : Fragment(), GenericAdapterCallback, CoroutineScope {
                     }
                 }
             }
+    }
+
+    override fun setBottomNavVisibility(visibility: Int) {
+
     }
 
 

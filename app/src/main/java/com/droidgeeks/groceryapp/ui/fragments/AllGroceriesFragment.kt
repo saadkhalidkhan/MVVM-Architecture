@@ -8,13 +8,13 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.droidgeeks.groceryapp.databinding.FragmentAllGroceriesBinding
+import com.droidgeeks.groceryapp.interfaces.GenericAdapterCallback
 import com.droidgeeks.groceryapp.room.tables.GroceryTable
 import com.droidgeeks.groceryapp.ui.GroceryAdapter
 import com.droidgeeks.groceryapp.view_model.HomeViewModel
@@ -28,7 +28,8 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
-class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickListener {
+class AllGroceriesFragment(private val callback: GenericAdapterCallback) : Fragment(),
+    CoroutineScope, GroceryAdapter.OnItemClickListener {
 
     lateinit var binding: FragmentAllGroceriesBinding
 
@@ -66,6 +67,7 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
             }
 
         binding.itemsImg.setOnClickListener {
+            callback.setBottomNavVisibility(View.GONE)
             setVisibility(View.GONE)
         }
 
@@ -75,6 +77,7 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
                 HomeFragmentDirections.actionHomeFragmentToAddGroceryFragment(Gson().toJson(grocery))
             navGraph.navigate(action)
 
+            callback.setBottomNavVisibility(View.GONE)
             setVisibility(View.GONE)
         }
 
@@ -121,6 +124,7 @@ class AllGroceriesFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemCl
     override fun onItemClick(grocery: GroceryTable) {
 
         this.grocery = grocery
+        callback.setBottomNavVisibility(View.GONE)
         setVisibility(View.VISIBLE)
 
         tv_items.text = grocery.items

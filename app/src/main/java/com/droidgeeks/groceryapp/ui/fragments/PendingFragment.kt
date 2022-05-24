@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.droidgeeks.groceryapp.databinding.FragmentPendingBinding
+import com.droidgeeks.groceryapp.interfaces.GenericAdapterCallback
 import com.droidgeeks.groceryapp.room.tables.GroceryTable
 import com.droidgeeks.groceryapp.ui.GroceryAdapter
 import com.droidgeeks.groceryapp.view_model.HomeViewModel
@@ -26,7 +27,7 @@ import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 @AndroidEntryPoint
-class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickListener {
+class PendingFragment(private val callback: GenericAdapterCallback) : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickListener {
 
 
     lateinit var binding: FragmentPendingBinding
@@ -68,6 +69,7 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
             }
 
         binding.itemsImg.setOnClickListener {
+            callback.setBottomNavVisibility(View.VISIBLE)
             setVisibility(View.GONE)
         }
 
@@ -131,8 +133,8 @@ class PendingFragment : Fragment(), CoroutineScope, GroceryAdapter.OnItemClickLi
     }
 
     override fun onItemClick(grocery: GroceryTable) {
+        callback.setBottomNavVisibility(View.GONE)
         setVisibility(View.VISIBLE)
-
         tv_items.text = grocery.items
         tv_items.movementMethod = ScrollingMovementMethod()
     }
