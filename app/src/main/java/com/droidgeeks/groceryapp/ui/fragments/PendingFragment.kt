@@ -18,6 +18,7 @@ import com.droidgeeks.groceryapp.interfaces.GenericAdapterCallback
 import com.droidgeeks.groceryapp.room.tables.GroceryTable
 import com.droidgeeks.groceryapp.ui.GroceryAdapter
 import com.droidgeeks.groceryapp.view_model.HomeViewModel
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_all_groceries.*
 import kotlinx.coroutines.CoroutineScope
@@ -43,6 +44,8 @@ class PendingFragment(private val callback: GenericAdapterCallback) : Fragment()
         get() = Dispatchers.Main + compositeJob
 
     var groceryList: List<GroceryTable> = listOf()
+
+    lateinit var grocery: GroceryTable
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,6 +73,16 @@ class PendingFragment(private val callback: GenericAdapterCallback) : Fragment()
 
         binding.itemsImg.setOnClickListener {
             callback.setBottomNavVisibility(View.VISIBLE)
+            setVisibility(View.GONE)
+        }
+
+        binding.btnEdit.setOnClickListener {
+
+            val action =
+                HomeFragmentDirections.actionHomeFragmentToAddGroceryFragment(Gson().toJson(grocery))
+            navGraph.navigate(action)
+
+            callback.setBottomNavVisibility(View.GONE)
             setVisibility(View.GONE)
         }
 
@@ -133,6 +146,7 @@ class PendingFragment(private val callback: GenericAdapterCallback) : Fragment()
     }
 
     override fun onItemClick(grocery: GroceryTable) {
+        this.grocery = grocery
         callback.setBottomNavVisibility(View.GONE)
         setVisibility(View.VISIBLE)
         tv_items.text = grocery.items
@@ -143,6 +157,7 @@ class PendingFragment(private val callback: GenericAdapterCallback) : Fragment()
         binding.itemView.visibility = visibility
         binding.tvItems.visibility = visibility
         binding.itemsImg.visibility = visibility
+        binding.btnEdit.visibility = visibility
     }
 
 
